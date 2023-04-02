@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ feed.name }}</h1>
+  <p>URL: {{ feed.url }}</p>
+
+  <h2>Latest Articles</h2>
+  {% for article in articles %}
+  {% include 'includes/article_card.html' %}    
+  {% empty %}
+    <p>No articles found.</p>
+  {% endfor %}
+{% endblock %}

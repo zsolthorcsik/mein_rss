@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/news.css' %}">    
+    <link rel="stylesheet" href="{% static 'css/card.css' %}">    
+    <script src="{% static 'js/card.js' %}"></script>
+    <script src="{% static 'js/image_lazy_load.js' %}"></script>
+    <title>{% block title %}MeinRSS{% endblock %}</title>    
+  </head>
+  <body>
+    <header>
+      <nav>        
+        <a href="/" class="brand-logo">MeinRSS</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'main:profile' %}">Profile</a></li>
+            <li><a href="{% url 'main:logout' %}">Logout</a></li>
+          {% else %}
+            <li><a href="{% url 'main:login' %}">Login</a></li>
+          {% endif %}  
+        </ul>                
+      </nav>
+    </header>
+    <main>
+      <section id="content">
+        {% block content %}
+        {% endblock %}
+      </section>      
+    </main>
+  </body>
+</html>

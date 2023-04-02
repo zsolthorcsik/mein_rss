@@ -1,0 +1,16 @@
+<div class="article_card lazy" style="--background_url: url({{article.og_image}});">
+
+  <div class="article_card_content">
+    <h4 class="article_title"><a href="{{article.link}}">{{article.title}}</a></h4>
+    <div class="article_agent_and_datum"><a href="{% url 'main:feed_detail' article.source.slug %}">{{ article.source.name }}</a>  <span class="published"><span>| </span>{{ article.date_published }}</span></div>
+    <div class="description_container">
+      {% if article.description|length >= 220 %}
+        <p class="article_description">{{article.description|slice:":220"}} (...)</p>
+      {% else %}
+        <p class="article_description">{{article.description|slice:":220"}}</p>
+      {% endif %}
+
+      <a class="btn_read_more" href="{{article.link}}" target="_blank">Elolvasom</a>
+    </div>
+  </div>
+</div>

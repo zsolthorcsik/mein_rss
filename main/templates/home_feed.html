@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>My Topics</h2>
+<!-- Here My Topics -->
+{% for user_topic in user_topics %}
+
+    {% with user_topic.topic as topic %}
+        {% include "includes/topic_block.html" %}
+    {% endwith %}
+    
+{% endfor %}
+
+<h2>My Feeds</h2>
+<!-- Here My Feeds -->
+{% for user_feed in user_feeds %}
+    <h6>{{user_feed.feed.name}}</h6>
+    {% for article in user_feed.feed.article_set.all|slice:":5"%}
+        
+        <li><a href="{{ article.link }}">{{ article.title }}</a></li>
+    {% endfor %}
+{% endfor %}
+{% endblock %}
+

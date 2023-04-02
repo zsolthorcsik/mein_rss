@@ -1,0 +1,13 @@
+<div class="topic_block">
+    <div class="topic_header">      
+      <h4 class="card-title"><a class="black-text" href="/topics/{{topic.slug}}">{{topic.name}}</a></h4>            
+    </div>
+    <div class="topic_articles slider">
+      {% for article in topic.article_set.all|slice:":9" %}
+        <div class="slider-element">
+          {% include "includes/article_card.html" %}
+        </div>
+      {% endfor %}
+    </div>
+    <a href="/topics/{{topic.slug}}" class="btn green">Minden erről: {{topic.name}}</a>
+  </div>
