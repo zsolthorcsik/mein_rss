@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{topic.name}}</h2>
+<p>{{topic.description}}</p>
+{% for article in topic.article_set.all|dictsortreversed:"date_published" %}
+    {% include "includes/article_card.html" %}
+{% endfor %}
+{% endblock %}

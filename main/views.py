@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
+from django.core.paginator import Paginator
 from django.contrib.auth.views import LoginView
-
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
-from .models import Topic, Feed,  UserTopic, UserFeed, UserTopic
+from .models import Article, Topic, Feed,  UserTopic, UserFeed, UserTopic
 
 
 
@@ -119,6 +121,32 @@ def feed_detail(request, feed_slug):
     context = {'feed': feed, 'articles': articles}
     return render(request, 'feed_detail.html', context)
 
+
+def topic_detail(request, topic_slug):
+    topic = get_object_or_404(Topic, slug=topic_slug)    
+    return render(request=request, template_name='topic_detail.html', context={'topic': topic})
+
+@csrf_exempt
+def all_view(request):
+    """
+    This function returns html for all the articles in the detailed_search view.
+    """    
+    #return render(request=request, template_name='all.html')
+    page = int(request.GET.get('page', 1))
+    per_page = int(request.GET.get('per_page', 10))
+    offset = (page - 1) * per_page
+    articles = Article.objects.order_by('-date_published')[offset:offset+per_page]
+    data = [{'title': a.title, 'description': a.description, 'image': a.og_image, 'source': a.source.name, 'source_slug':a.source.slug, 'date_published': a.date_published.strftime('%Y-%m-%d %H:%M:%S'), 'link': a.link} for a in articles]
+    return render(request, 'all.html')
+
+@csrf_exempt
+def all_view_requests(request):
+    page = int(request.GET.get('page', 1))
+    per_page = int(request.GET.get('per_page', 10))
+    offset = (page - 1) * per_page
+    articles = Article.objects.order_by('-date_published')[offset:offset+per_page]    
+    data = [{'title': a.title, 'description': a.description, 'image': a.og_image, 'source': a.source.name, 'source_slug':a.source.slug,  'date_published': a.date_published.strftime('%Y-%m-%d %H:%M:%S'), 'link': a.link} for a in articles]
+    return JsonResponse(data=data, safe=False)
 
 
 # TODO:
