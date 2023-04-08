@@ -25,7 +25,7 @@
           html += '<div class="article_card" style="--background_url: url(' + article.image + ');">';
         html += '<div class="article_card_content">';
         html += '<h4 class="article_title"><a href="' + article.link + '">' + article.title + '</a></h4>';
-        html += '<div class="article_agent_and_datum"><a href="/main/feed/' + article.source_slug + '">' + article.source + '</a>  <span class="published"><span>| </span>' + article.date_published + '</span></div>';
+        html += '<div class="article_agent_and_datum"><a href="/feed/' + article.source_slug + '">' + article.source + '</a>  <span class="published"><span>| </span>' + article.date_published + '</span></div>';
         html += '<div class="description_container">';
         if (article.description.length >= 220) {
         html += '<p class="article_description">' + article.description.slice(0,220) + '... </p>';
