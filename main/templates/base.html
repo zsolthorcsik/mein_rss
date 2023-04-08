@@ -5,28 +5,61 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
     <link rel="stylesheet" href="{% static 'css/news.css' %}">    
     <link rel="stylesheet" href="{% static 'css/card.css' %}">    
     <script src="{% static 'js/card.js' %}"></script>
     <script src="{% static 'js/image_lazy_load.js' %}"></script>
+    <script src="{% static 'js/menu.js' %}"></script>
     <title>{% block title %}MeinRSS{% endblock %}</title>    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   </head>
   <body>
-    <header>
-      <nav>        
+    <nav class="nav-extended">
+      <div class="nav-wrapper">
         <a href="/" class="brand-logo">MeinRSS</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons" style="color:black">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           {% if user.is_authenticated %}
             <li><a href="{% url 'main:profile' %}">Profile</a></li>
+            <li><a href="{% url 'main:profile' %}">All</a></li>
             <li><a href="{% url 'main:logout' %}">Logout</a></li>
           {% else %}
             <li><a href="{% url 'main:login' %}">Login</a></li>
           {% endif %}  
         </ul>                
-      </nav>
-    </header>
+      </div>
+    </nav>
+    
+    <ul class="sidenav" id="mobile-demo">
+      <li><a href="/">Home</a></li>            
+      {% if user.is_authenticated %}
+      <li><a href="{% url 'main:all' %}">All</a></li>
+        <li><a href="{% url 'main:profile' %}">Profile</a></li>        
+        <li><a href="{% url 'main:logout' %}">Logout</a></li>
+      {% else %}
+        <li><a href="{% url 'main:login' %}">Login</a></li>
+        <li><a href="{% url 'main:signup' %}">Sign Up</a></li>
+      {% endif %}  
+    </ul>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems, {});
+      });
+    </script>
+       
+    
     <main>
       <section id="content">
         {% block content %}
