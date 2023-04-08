@@ -7,7 +7,7 @@ function loadArticles() {
 
 var page = $('#load_more_button').data("page-id");
 var slug = $('#load_more_button').data("slug");
-var perPage = 2;
+var perPage = 10;
 $.ajax({    
   url: "/" + slug + "/?page=" + page + "&per_page=" + perPage,
   success: function(data) {            

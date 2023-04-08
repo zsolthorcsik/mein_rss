@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Profile</h1>
   <form method="post">
     {% csrf_token %}
-    <h2>Select your preferred topics:</h2>
+    <h4>Select your preferred topics:</h4>
     
     {% for topic in topics %}
       <div style="padding:10px;">
@@ -17,8 +16,8 @@
       </div>
       
     {% endfor %}
-    <h4><a href="{% url 'main:add_topic'%}">Add Topic</a></h4>
-    <h2>Select preferred Feeds:</h2>
+    <a class="waves-effect waves-light btn" href="{% url 'main:add_topic'%}">Add Topic</a>
+    <h4>Select preferred Feeds:</h4>
     {% for feed in feeds %}
       <div>
         <p>
@@ -30,7 +29,9 @@
         </p>              
       </div>      
     {% endfor %}
-    <h4><a href="{% url 'main:add_feed' %}">Add feed</a></h4>
+    <a class="waves-effect waves-light btn" href="{% url 'main:add_feed' %}">Add feed</a>
+    <br>
+    <br>
     <button type="submit">Save</button>
   </form>
 {% endblock %}

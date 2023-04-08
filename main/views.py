@@ -5,7 +5,7 @@ from django.db.models import Count, Q
 # Create your views here.
 from django.core.paginator import Paginator
 from django.contrib.auth.views import LoginView
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotAllowed
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
@@ -135,7 +135,8 @@ def feed_detail(request, feed_slug):
 
 def topic_detail(request, topic_slug):
     topic = get_object_or_404(Topic, slug=topic_slug)    
-    return render(request=request, template_name='details/topic_detail.html', context={'topic': topic})
+    user_topics = UserTopic.objects.filter(user=request.user)
+    return render(request=request, template_name='details/topic_detail.html', context={'topic': topic, 'user_topics': user_topics})
 
 @csrf_exempt
 def all_view(request):
@@ -173,5 +174,20 @@ def topic_requests(request, topic_slug):
     data = [{'title': a.title, 'description': a.description, 'image': a.og_image, 'source': a.source.name, 'source_slug':a.source.slug,  'date_published': a.date_published.strftime('%Y-%m-%d %H:%M:%S'), 'link': a.link} for a in articles]
     return JsonResponse(data=data, safe=False)
     
+
+@login_required
+def add_remove_topic(request):
+    if request.method == 'POST':
+        topic_id = request.POST.get('topic_id')
+        topic = Topic.objects.get(id=topic_id)
+        action = request.POST.get('action')
+        if action == 'add':
+            UserTopic.objects.create(user=request.user, topic=topic)
+        elif action == 'remove':
+            UserTopic.objects.filter(user=request.user, topic=topic).delete()
+        return redirect('main:topic_detail', topic_slug=topic.slug)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
 
 
