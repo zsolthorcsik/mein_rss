@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{topic.name}}</h2>
+<p>{{topic.description}}</p>
+
+
+<div id="articles_holder">
+
+</div>
+<button id="load_more_button" data-page-id="1" data-slug="topic_requests/{{topic.slug}}">Load More</button>
+{% load static %}
+<script src="{% static 'js/articles_load.js' %}"></script>
+
+
+
+
+{% endblock %}
+
+

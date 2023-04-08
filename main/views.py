@@ -135,7 +135,7 @@ def feed_detail(request, feed_slug):
 
 def topic_detail(request, topic_slug):
     topic = get_object_or_404(Topic, slug=topic_slug)    
-    return render(request=request, template_name='topic_detail.html', context={'topic': topic})
+    return render(request=request, template_name='details/topic_detail.html', context={'topic': topic})
 
 @csrf_exempt
 def all_view(request):
@@ -159,10 +159,19 @@ def all_view_requests(request):
     data = [{'title': a.title, 'description': a.description, 'image': a.og_image, 'source': a.source.name, 'source_slug':a.source.slug,  'date_published': a.date_published.strftime('%Y-%m-%d %H:%M:%S'), 'link': a.link} for a in articles]
     return JsonResponse(data=data, safe=False)
 
+@csrf_exempt
+def topic_requests(request, topic_slug):
+    """
+    Returns json for the ajax request on the topic page
+    """    
+    print(topic_slug)
+    topic = get_object_or_404(Topic, slug=topic_slug)    
+    page = int(request.GET.get('page', 1))
+    per_page = int(request.GET.get('per_page', 10))
+    offset = (page - 1) * per_page
+    articles = topic.article_set.order_by('-date_published')[offset:offset+per_page]    
+    data = [{'title': a.title, 'description': a.description, 'image': a.og_image, 'source': a.source.name, 'source_slug':a.source.slug,  'date_published': a.date_published.strftime('%Y-%m-%d %H:%M:%S'), 'link': a.link} for a in articles]
+    return JsonResponse(data=data, safe=False)
+    
 
-# TODO:
-# 1. Create models. Copy from hirek.sess.hu
-# 2. Copy the rss_collecion method
-# 3. Copy the topic_finding method
-# 4. Associate the rss_collecion with the users
-# 5. Display rss content to the user
+
