@@ -135,8 +135,9 @@ def feed_detail(request, feed_slug):
 
 def topic_detail(request, topic_slug):
     topic = get_object_or_404(Topic, slug=topic_slug)    
-    user_topics = UserTopic.objects.filter(user=request.user)
-    return render(request=request, template_name='details/topic_detail.html', context={'topic': topic, 'user_topics': user_topics})
+    is_user_topic = UserTopic.objects.filter(user=request.user).filter(topic=topic)
+    print(is_user_topic)
+    return render(request=request, template_name='details/topic_detail.html', context={'topic': topic, 'is_user_topic': is_user_topic})
 
 @csrf_exempt
 def all_view(request):
@@ -164,8 +165,7 @@ def all_view_requests(request):
 def topic_requests(request, topic_slug):
     """
     Returns json for the ajax request on the topic page
-    """    
-    print(topic_slug)
+    """        
     topic = get_object_or_404(Topic, slug=topic_slug)    
     page = int(request.GET.get('page', 1))
     per_page = int(request.GET.get('per_page', 10))

@@ -2,15 +2,16 @@
 {% block content %}
 <h2>{{topic.name}}</h2>
 <p>{{topic.description}}</p>
-{% if request.user.is_authenticated %}
-  {% for user_topic in request.user.user_topics_set.all %}  
-  {{user_topic}}
-    {% if topic == user_topic.topic %}
-      <button type="submit" name="action" value="remove">Remove from My Topics</button>      
-    {% endif %}
-  {% endfor %}
-{% endif %}
 
+<form method="POST" action="{% url 'main:add_remove_topic' %}">
+    {% csrf_token %}
+    <input type="hidden" name="topic_id" value="{{ topic.id }}">
+    {% if is_user_topic %}
+        <button type="submit" name="action" value="remove">Remove from My Topics</button>
+    {% else %}
+        <button type="submit" name="action" value="add">Add to My Topics</button>
+    {% endif %}
+</form>
 
 
 <div id="articles_holder">
