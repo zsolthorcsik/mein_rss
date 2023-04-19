@@ -19,5 +19,5 @@ urlpatterns = [
     path('all_requests/', all_view_requests, name='all_requests'),
     path('topic_requests/<slug:topic_slug>/', topic_requests, name='topic_requests'),
     path('add_remove_topic/', views.add_remove_topic, name='add_remove_topic')
-
+    
     ]

@@ -30,21 +30,15 @@ def home(request):
     context = {}
     # If not authenticated
     if not request.user.is_authenticated:                
-        return render(request=request, context = context, template_name='home.html')
+        return render(request=request, context=context, template_name='home.html')
     else:
-        context['user_feeds'] = list(UserFeed.objects.filter(user=request.user))        
-        
-
-         # Count the number of articles created in the last 24 hours for each topic
-        now = timezone.now()
-        yesterday = now - timezone.timedelta(days=1)
+        # Get the feeds and topics that the user has subscribed to
+        context['user_feeds'] = UserFeed.objects.filter(user=request.user)        
         user_topics = UserTopic.objects.filter(user=request.user).annotate(
-            article_count=Count('topic__article', filter=Q(topic__article__date_published__gte=yesterday))
+            article_count=Count('topic__article', filter=Q(topic__article__date_published__gte=timezone.now()-timezone.timedelta(days=1)))
         ).order_by('-article_count')
-        #context['user_topics'] = list(UserTopic.objects.filter(user=request.user))        
         context['user_topics'] = user_topics
         return render(request=request, template_name='home_feed.html', context=context)
-
 
 @login_required
 def profile(request):
