@@ -1,0 +1,9 @@
+<form method="POST" action="{% url 'main:add_remove_topic' %}">
+    {% csrf_token %}
+    <input type="hidden" name="topic_id" value="{{ topic.id }}">
+    {% if is_user_topic %}
+        <button type="submit" name="action" value="remove" class="waves-effect waves-light btn"><i class="material-icons left">check</i>Added to My Topics</button>        
+    {% else %}
+        <button type="submit" name="action" value="add" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add to My Topics</button>                
+    {% endif %}
+</form>
