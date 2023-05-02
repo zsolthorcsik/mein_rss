@@ -3,7 +3,7 @@
       <h4 class="card-title"><a class="black-text" href="/topic/{{topic.slug}}">{{topic.name}}</a></h4>            
     </div>
     <div class="topic_articles slider">
-      {% for article in topic.article_set.all|slice:":9"|dictsortreversed:"date_published" %}
+      {% for article in topic.article_set.all|dictsortreversed:"date_published"|slice:":9" %}
         <div class="slider-element">
           {% include "includes/article_card.html" %}
         </div>

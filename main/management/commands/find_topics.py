@@ -19,10 +19,8 @@ class Command(BaseCommand):
             )
             # Iterating through all articles that have the topic title in the title or description.
             for article in articles:                
-                article.topics.add(topic)
-                # Saving the article.
-                article.save()
-                # Printing the article title and topic name.
+                article.topics.add(topic)                
+                article.save()                
                 print(topic.name, article.title)
 
             
