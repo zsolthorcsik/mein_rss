@@ -1,7 +1,7 @@
 <div class="topic_block">
     <div class="topic_header">      
       <h4 class="card-title"><a class="black-text" href="/topic/{{topic.slug}}">{{topic.name}}</a></h4>            
-    </div>
+    </div>    
     <div class="topic_articles slider">
       {% for article in topic.article_set.all|dictsortreversed:"date_published"|slice:":9" %}
         <div class="slider-element">
@@ -9,5 +9,5 @@
         </div>
       {% endfor %}
     </div>
-    <a href="/topic/{{topic.slug}}" class="btn green">More about {{topic.name}}</a>
+    <a href="/topic/{{topic.slug}}" class="btn green">More about {{topic.name}}</a>        
   </div>
