@@ -53,7 +53,8 @@ function loadArticles() {
       // Checking if there are more pages available
       if (data.length < perPage) {
         $('#load_more_button').hide();
-      }      
+      }
+      run_card_js();
     }
   });
 }
