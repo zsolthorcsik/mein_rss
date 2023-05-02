@@ -7,17 +7,24 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Iterating through all topics
         for topic in Topic.objects.all():
-            # Finding articles that have the topic title in the title or description.
-            articles = Article.objects.filter(title__icontains=topic.name) | Article.objects.filter(description__icontains=topic.name)
+            # Finding articles that have the topic title in the title or description and don't have the topic already.
+            articles = Article.objects.filter(
+                title__icontains=topic.name
+            ).exclude(
+                topics=topic
+            ) | Article.objects.filter(
+                description__icontains=topic.name
+            ).exclude(
+                topics=topic
+            )
             # Iterating through all articles that have the topic title in the title or description.
-            for article in articles:
-                # Adding the topic to the article.
+            for article in articles:                
                 article.topics.add(topic)
                 # Saving the article.
                 article.save()
                 # Printing the article title and topic name.
-                print(article.title, topic.name)
-                
+                print(topic.name, article.title)
+
             
             
         
