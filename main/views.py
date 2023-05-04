@@ -122,8 +122,10 @@ def add_feed(request):
 @login_required
 def feed_detail(request, feed_slug):
     feed = get_object_or_404(Feed, slug=feed_slug)
-    articles = feed.article_set.order_by('-date_published')[:5]
-    context = {'feed': feed, 'articles': articles}
+    # Getting the most common topics for the feed together with the number of articles in each topic.
+    topics = Topic.objects.filter(article__source=feed).annotate(article_count=Count('article')).order_by('-article_count')    
+    # Print number of articles in each topic    
+    context = {'feed': feed, 'topics': topics}    
     return render(request, 'feed_detail.html', context)
 
 

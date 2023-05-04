@@ -4,6 +4,26 @@
   <h1>{{ feed.name }}</h1>
   <p>RSS Feed URL: <a href="{{ feed.url }}">{{feed.url}}</a></p>
 
+  <!-- Listing the feed's most common topics together with the number of articles in the topic -->
+  <h4>Most Common Topics</h4>
+  <!-- Container for the topic cards -->
+<div class="row">
+
+  <!-- Loop over topics and create a card for each one -->
+  {% for topic in topics|slice:10 %}
+  <div class="col s6 m4 l3">
+    <div class="card small">
+      <div class="card-content">
+        <p class="card-title"><a href="/all/{{topic.slug}}">{{ topic.name }}</a></p>
+        <p class="card-subtitle">Articles: {{ topic.article_count }}</p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+
+  
   <h4>Latest Articles</h4>
   <div id="articles_holder">
 

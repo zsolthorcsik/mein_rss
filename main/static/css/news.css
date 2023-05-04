@@ -408,3 +408,27 @@
   .news_agent_heading {
     font-size: 46px;
   }
+
+/* Custom styles for the cards */
+.card {
+  border-radius: 8px;  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  
+
+  max-height: 200px;
+}
+
+.card-content {
+  padding: 12px;  
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.card-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
