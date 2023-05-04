@@ -167,6 +167,18 @@ def topic_requests(request, topic_slug):
     articles = topic.article_set.order_by('-date_published')[offset:offset+per_page]    
     data = [{'title': a.title, 'description': a.description, 'image': a.og_image, 'source': a.source.name, 'source_slug':a.source.slug,  'date_published': a.date_published.strftime('%Y-%m-%d %H:%M:%S'), 'link': a.link} for a in articles]
     return JsonResponse(data=data, safe=False)
+
+
+@csrf_exempt
+def feed_requests(request, feed_slug):
+    # DOing the same for requests as for topics.
+    feed = get_object_or_404(Feed, slug=feed_slug)
+    page = int(request.GET.get('page', 1))
+    per_page = int(request.GET.get('per_page', 10))
+    offset = (page - 1) * per_page
+    articles = feed.article_set.order_by('-date_published')[offset:offset+per_page]
+    data = [{'title': a.title, 'description': a.description, 'image': a.og_image, 'source': a.source.name, 'source_slug':a.source.slug,  'date_published': a.date_published.strftime('%Y-%m-%d %H:%M:%S'), 'link': a.link} for a in articles]
+    return JsonResponse(data=data, safe=False)
     
 
 @login_required

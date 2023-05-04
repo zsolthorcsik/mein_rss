@@ -17,6 +17,7 @@ urlpatterns = [
     path('topic/<slug:topic_slug>/', topic_detail, name='topic_detail'),
     path('all/', all_view, name='all'),
     path('all_requests/', all_view_requests, name='all_requests'),
-    path('topic_requests/<slug:topic_slug>/', topic_requests, name='topic_requests'),
+    path('topic_requests/<slug:topic_slug>/', topic_requests, name='topic_requests'),    
+    path('feed_requests/<slug:feed_slug>/', views.feed_requests, name='feed_requests'),
     path('add_remove_topic/', views.add_remove_topic, name='add_remove_topic')    
     ]

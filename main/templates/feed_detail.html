@@ -2,12 +2,13 @@
 
 {% block content %}
   <h1>{{ feed.name }}</h1>
-  <p>URL: {{ feed.url }}</p>
+  <p>RSS Feed URL: <a href="{{ feed.url }}">{{feed.url}}</a></p>
 
-  <h2>Latest Articles</h2>
-  {% for article in articles %}
-  {% include 'includes/article_card.html' %}    
-  {% empty %}
-    <p>No articles found.</p>
-  {% endfor %}
+  <h4>Latest Articles</h4>
+  <div id="articles_holder">
+
+  </div>
+  <button id="load_more_button" data-page-id="1" data-slug="feed_requests/{{feed.slug}}">Load More</button>
+  {% load static %}
+  <script src="{% static 'js/articles_load.js' %}"></script>    
 {% endblock %}
