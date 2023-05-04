@@ -139,23 +139,44 @@ def topic_detail(request, topic_slug):
 def all_view(request):
     """
     This function returns html for all the articles in the detailed_search view.
-    """    
-    #return render(request=request, template_name='all.html')
-    page = int(request.GET.get('page', 1))
-    per_page = int(request.GET.get('per_page', 10))
-    offset = (page - 1) * per_page
-    articles = Article.objects.order_by('-date_published')[offset:offset+per_page]
-    data = [{'title': a.title, 'description': a.description, 'image': a.og_image, 'source': a.source.name, 'source_slug':a.source.slug, 'date_published': a.date_published.strftime('%Y-%m-%d %H:%M:%S'), 'link': a.link} for a in articles]
-    return render(request, 'all.html')
+    """        
+    # Getting the topic object according to the get parameter
+    context = {}
+    topic_name = request.GET.get('topic')
+    feed_slug = request.GET.get('feed')
+    if topic_name:
+        topic = get_object_or_404(Topic, name=topic_name)
+        context['topic'] = topic
+    if feed_slug:
+        feed = get_object_or_404(Feed, slug=feed_slug)
+        context['feed'] = feed    
+    return render(request, 'all.html', context=context)
+
 
 @csrf_exempt
 def all_view_requests(request):
     page = int(request.GET.get('page', 1))
     per_page = int(request.GET.get('per_page', 10))
     offset = (page - 1) * per_page
-    articles = Article.objects.order_by('-date_published')[offset:offset+per_page]                
-    data = [{'title': a.title, 'description': a.description, 'image': a.og_image, 'source': a.source.name, 'source_slug':a.source.slug,  'date_published': a.date_published.strftime('%Y-%m-%d %H:%M:%S'), 'link': a.link} for a in articles]            
+
+    # Get the topic and feed query parameters
+    topic_name = request.GET.get('topic')
+    feed_slug = request.GET.get('feed')
+
+    print(feed_slug)
+    # Filter the queryset based on the topic and feed parameters
+    articles = Article.objects.order_by('-date_published')
+    if topic_name:
+        articles = articles.filter(topics__name__iexact=topic_name)
+    if feed_slug:
+        articles = articles.filter(source__slug=feed_slug)
+
+    # Paginate the queryset and serialize it to JSON
+    articles = articles[offset:offset+per_page]
+    data = [{'title': a.title, 'description': a.description, 'image': a.og_image, 'source': a.source.name, 'source_slug': a.source.slug, 'date_published': a.date_published.strftime('%Y-%m-%d %H:%M:%S'), 'link': a.link} for a in articles]            
     return JsonResponse(data=data, safe=False)
+
+
 
 @csrf_exempt
 def topic_requests(request, topic_slug):

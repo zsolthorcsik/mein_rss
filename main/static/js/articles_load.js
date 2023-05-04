@@ -27,9 +27,11 @@ function loadArticles() {
 
   var page = $('#load_more_button').data("page-id");
   var slug = $('#load_more_button').data("slug");
+  var url_params = new URLSearchParams(window.location.search);
+  
   var perPage = 10;
   $.ajax({    
-    url: "/" + slug + "/?page=" + page + "&per_page=" + perPage,
+    url: "/" + slug + "/?page=" + page + "&per_page=" + perPage + "&" + url_params.toString(),
     success: function(data) {
       var html = '';
       for (var i = 0; i < data.length; i++) {             

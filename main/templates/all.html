@@ -2,13 +2,40 @@
 
 {% block content %}
 
+<h1>All Articles</h1>
+{% if topic or feed %}
+    <h4>Filters applied: </h4>
+    <ul>
+        {% if topic %}
+            <li>Topic: {{ topic }}</li>
+        {% endif %}
+            
+        {% if feed %}
+            <li>Feed: {{ feed }}</li>
+        {% endif %}
+    </ul>    
+{% endif %}
+
 <div id="articles_holder">
 
 </div>
-<button id="load_more_button" data-page-id="1" data-slug="all_requests">Load More</button>
+
+
+<button id="load_more_button" data-page-id="1" data-slug="all_requests" data-topic="{{ topic }}" data-feed="{{ feed }}">Load More</button>
+
 {% load static %}
 <script src="{% static 'js/articles_load.js' %}"></script>
+<script>
+    // Get the topic and feed query parameters from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const topic = urlParams.get('topic');
+    const feed = urlParams.get('feed');
+    
+    // Set the data-topic and data-feed attributes on the button
+    const loadMoreButton = document.getElementById('load_more_button');
+    loadMoreButton.setAttribute('data-topic', topic);
+    loadMoreButton.setAttribute('data-feed', feed);
+</script>
+
 {% endblock %}
-
-
 
