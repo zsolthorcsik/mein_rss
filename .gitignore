@@ -5,4 +5,5 @@ __pycache__/
 *.db
 mein_rss/settings.py
 */migrations/
+.vscode
 

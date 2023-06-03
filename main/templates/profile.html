@@ -32,6 +32,18 @@
     <a class="waves-effect waves-light btn" href="{% url 'main:add_feed' %}">Add feed</a>
     <br>
     <br>
+    <h4>Threads by you:</h4>
+    {% for thread in user_threads %}
+      <div>
+        <p>
+          <label>            
+            <span>{{thread.name}}</span>
+          </label>
+        </p>              
+      </div>      
+    {% endfor %}
+    <a class="waves-effect waves-light btn" href="{% url 'main:add_thread'%}">Add Thread</a>
+    <br>
     <button type="submit">Save</button>
   </form>
 {% endblock %}

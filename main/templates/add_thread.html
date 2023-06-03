@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="title">Title:</label>
+        <input type="text" name="name" id="name" required>
+        <br>
+        <label for="content">Content:</label>
+        <textarea name="content" id="description" cols="30" rows="10" ></textarea>
+        <br>
+        <p>You will be able to add topics, articles and feeds later.</p>
+        <br>
+        <button type="submit">Add Thread</button>
+    </form>
+    {% endblock %}
+
+

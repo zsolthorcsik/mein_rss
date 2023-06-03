@@ -9,7 +9,7 @@ from django.http import JsonResponse, HttpResponseNotAllowed
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
-from .models import Article, Topic, Feed,  UserTopic, UserFeed, UserTopic
+from .models import Article, Topic, Feed, Thread, UserTopic, UserFeed, UserTopic
 
 
 
@@ -17,10 +17,6 @@ from .models import Article, Topic, Feed,  UserTopic, UserFeed, UserTopic
 class CustomLoginView(LoginView):
     template_name = 'login.html'
 
-
-@login_required
-def profile(request):
-    return render(request, 'profile.html')
 
 
 def home(request):    
@@ -44,7 +40,7 @@ def home(request):
 def profile(request):
     if request.method == 'POST':
         topics = request.POST.getlist('topics')
-        feeds = request.POST.getlist('feeds')
+        feeds = request.POST.getlist('feeds')        
         UserTopic.objects.filter(user=request.user).delete() # Remove existing selections
         UserFeed.objects.filter(user=request.user).delete() # Remove existing selections
         for topic_id in topics:
@@ -58,10 +54,11 @@ def profile(request):
         return redirect('main:profile')
     else:
         topics = Topic.objects.all()
-        feeds = Feed.objects.all()        
+        feeds = Feed.objects.all()
+        user_threads = Thread.objects.filter(user=request.user)
         selected_topics = UserTopic.objects.filter(user=request.user).values_list('topic_id', flat=True)
         selected_feeds = UserFeed.objects.filter(user=request.user).values_list('feed_id', flat=True)
-        context = {'topics': topics, 'selected_topics': selected_topics, 'feeds':feeds, 'selected_feeds':selected_feeds}
+        context = {'topics': topics, 'selected_topics': selected_topics, 'feeds':feeds, 'selected_feeds':selected_feeds, 'user_threads':user_threads}
         return render(request, 'profile.html', context)
 
 @login_required
@@ -118,6 +115,21 @@ def add_feed(request):
     else:
         # Render the form template
         return render(request, 'add_feed.html')
+    
+@login_required
+def add_thread(request):
+    if request.method == 'POST':
+        # Create a new thread object from the form data
+        name = request.POST.get('name')        
+        description = request.POST.get('description', None)
+        thread = Thread(name=name, user=request.user)
+        thread.save()
+        # Redirect the user to the threads page
+        return redirect('main:profile')
+    else:
+        # Render the form template
+        return render(request, 'add_thread.html')
+
 
 @login_required
 def feed_detail(request, feed_slug):
