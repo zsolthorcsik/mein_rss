@@ -20,5 +20,8 @@ urlpatterns = [
     path('all_requests/', all_view_requests, name='all_requests'),
     path('topic_requests/<slug:topic_slug>/', topic_requests, name='topic_requests'),    
     path('feed_requests/<slug:feed_slug>/', views.feed_requests, name='feed_requests'),
-    path('add_remove_topic/', views.add_remove_topic, name='add_remove_topic')    
+    path('add_remove_topic/', views.add_remove_topic, name='add_remove_topic'),    
+    path('get_user_threads/', views.get_user_threads, name='get_user_threads'),
+    path('add_topic_to_thread/<int:thread_id>/', views.add_topic_to_thread, name='add_topic_to_thread'),
+
     ]

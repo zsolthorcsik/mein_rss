@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    {% load static %}
+    {% load static %}    
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -19,9 +19,14 @@
 
     <link rel="stylesheet" href="{% static 'css/news.css' %}">    
     <link rel="stylesheet" href="{% static 'css/card.css' %}">    
+    <script>
+      var csrftoken = "{{ csrf_token }}";
+    </script>
     <script src="{% static 'js/card.js' %}"></script>
     <script src="{% static 'js/image_lazy_load.js' %}"></script>
     <script src="{% static 'js/menu.js' %}"></script>
+    <script src="{% static 'js/thread.js' %}"></script>
+    
     
     <title>{% block title %}MeinRSS{% endblock %}</title>    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />

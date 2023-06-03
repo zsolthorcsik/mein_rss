@@ -2,6 +2,15 @@
 {% block content %}
 <h2>{{topic.name}}</h2>
 {% include 'includes/add_to_topics.html' %}
+<br>
+<button onclick="showThreadSelectionPopup('{{ topic.id }}', '{{ topic.name }}')">Add to my thread</button>
+
+<div id="threadSelectionPopup" style="display: none;">
+    <ul id="threadList">
+      <!-- Thread list items will be dynamically added here -->
+    </ul>
+  </div>
+  
 <p>{{topic.description}}</p>
 
 

@@ -1,9 +1,10 @@
+import json
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.db.models import Count, Q
 
 # Create your views here.
-from django.core.paginator import Paginator
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.contrib.auth.views import LoginView
 from django.http import JsonResponse, HttpResponseNotAllowed
 from django.contrib.auth.decorators import login_required
@@ -230,5 +231,36 @@ def add_remove_topic(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+@login_required
+def get_user_threads(request):
+    """
+    Returns the threads of the user in json format
+    """
+    threads = Thread.objects.filter(user=request.user)
+    data = [{'name': t.name, 'id': t.id} for t in threads]
+    return JsonResponse(data=data, safe=False)
 
 
+@login_required
+def add_topic_to_thread(request, thread_id):
+    print('add_topic_to_thread')
+    print(thread_id)
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)  # Parse the JSON data
+            topic_id = data.get('topicId')
+            topic_name = data.get('topicName')
+            thread = Thread.objects.get(id=thread_id)            
+            print(thread_id)
+            topic = Topic.objects.get(id=topic_id, name=topic_name)
+            print(topic)
+            thread.topics.add(topic)
+            thread.save()
+            print("success")
+            return JsonResponse({'threadId': thread.id})
+        except (Thread.DoesNotExist, Topic.DoesNotExist):
+            return JsonResponse({'error': 'Invalid thread or topic.'}, status=400)
+        except Exception as e:
+            print(e)
+
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)
