@@ -11,18 +11,22 @@ function showThreadSelectionPopup(topicId, topicName) {
   fetch("/get_user_threads/")
     .then(response => response.json())
     .then(data => {
+
+        console.log(data);
       // Clear the existing thread list items
       threadList.innerHTML = "";
 
       // Populate the thread list
       data.forEach(thread => {
         // Create a list item for each thread
-        const listItem = document.createElement("li");
+        const listItem = document.createElement("li");        
         listItem.textContent = thread.name;
+        listItem.classList.add("collection-item");
 
         // Create a plus button
         const plusButton = document.createElement("button");
         plusButton.textContent = "+";
+        plusButton.classList.add("btn", "btn-small", "waves-effect", "waves-light");
         plusButton.addEventListener("click", () => {
           // Function to associate the topic with the selected thread
           addToThread(thread.id, topicId, topicName);

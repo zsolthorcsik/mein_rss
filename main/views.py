@@ -237,6 +237,7 @@ def get_user_threads(request):
     Returns the threads of the user in json format
     """
     threads = Thread.objects.filter(user=request.user)
+    
     data = [{'name': t.name, 'id': t.id} for t in threads]
     return JsonResponse(data=data, safe=False)
 

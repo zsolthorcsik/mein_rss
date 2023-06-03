@@ -3,11 +3,11 @@
 <h2>{{topic.name}}</h2>
 {% include 'includes/add_to_topics.html' %}
 <br>
-<button onclick="showThreadSelectionPopup('{{ topic.id }}', '{{ topic.name }}')">Add to my thread</button>
+<button onclick="showThreadSelectionPopup('{{ topic.id }}', '{{ topic.name }}')" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add to my thread</button>
 
 <div id="threadSelectionPopup" style="display: none;">
-    <ul id="threadList">
-      <!-- Thread list items will be dynamically added here -->
+    <ul id="threadList" class="collection">
+      
     </ul>
   </div>
   
@@ -21,9 +21,6 @@
 <button id="load_more_button" data-page-id="1" data-slug="topic_requests/{{topic.slug}}">Load More</button>
 {% load static %}
 <script src="{% static 'js/articles_load.js' %}"></script>
-
-
-
 
 {% endblock %}
 
