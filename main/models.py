@@ -32,9 +32,6 @@ class Article(models.Model):
         return self.title
 
 
-
-
-
 # Model for Feeds
 class Feed(models.Model):
     name = models.CharField(max_length=255)
@@ -47,6 +44,30 @@ class Feed(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+
+class Thread(models.Model):
+    name = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    description = models.TextField(blank=True)
+    feeds = models.ManyToManyField('Feed', through='ThreadFeed')
+    topics = models.ManyToManyField('Topic', through='ThreadTopic')
+    articles = models.ManyToManyField('Article', through='ThreadArticle')
+
+class ThreadFeed(models.Model):
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    feed = models.ForeignKey('Feed', on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+class ThreadTopic(models.Model):
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    topic = models.ForeignKey('Topic', on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+class ThreadArticle(models.Model):
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    article = models.ForeignKey('Article', on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
 # Intermediate model for Topics
 class ArticleTopic(models.Model):
